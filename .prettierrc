@@ -7,5 +7,3 @@
     "trailingComma": "all"
 }
 
-// When You are writing code/project and you want to define some rule, how much
-// spacing, quetoes has to be given , so that during an merging you dont have to get in conflict.
