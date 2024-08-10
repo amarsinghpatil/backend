@@ -7,7 +7,6 @@
   "scripts": {
     "dev": "nodemon -r dotenv/congfig --experimental-json-modules src/index.js"
   },
-  
   "keywords": [
     "javascript",
     "backend",
@@ -15,7 +14,7 @@
   ],
 
   "author": "Hitesh Choudhary",
-  "license": "ISC",
+  "license": "ISC", 
   "devDependencies": {
     "nodemon": "^3.1.0",
     "prettier": "^3.2.5"
@@ -26,5 +25,7 @@
     "express": "^4.19.2",
     "mongoose": "^8.4.0"
   }
-
+  
 }
+
+
