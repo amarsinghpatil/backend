@@ -1,44 +1,38 @@
 
     import dotenv from "dotenv"
-   // require('dotenv').config();
     import connectDB from "./db/index.js";
-
-    dotenv.config({
+    import express from "express"
+    const app = express();
+   
+    dotenv.config({ 
         path: './env'
     })
 
 connectDB()
+ 
+/*
+ This code is written Due to when database connection code was written async method was used and somethings it
+ return throgh
+
+*/
+
+.then(() => {
+    app.on('error', (error) => {
+        console.log('Error', (error) => {
+            console.log('Error:', error);
+            throw error;
+        });
+    })
+
+    app.listen(process.env.PORT || 8000, () =>{
+    //If an Port was not able identify then use default or use an server port (best Production practice to avoid an server crash)
+
+        console.log(`Server is running at port : ${process.env.PORT}`);
+    })
+})
 
 
-// import express from "express"
-// const app = express()
+.catch((err) => {
+    console.log("MONGO db connection failed !!! ", err);
+})
 
-// ( async () => {
-
-//     try {
-
-//         // 1. connecting to mongodb
-//       await mongoose.connect(`${process.env.MONGODB_URL}/${DB_NAME}`)
-//         // this is how an database is connected with an name given by an DB_NAME
-//         // async await is used because of an database is in another contitent
-
-
-//         // 2. error handling
-//         app.on("error", () => {
-//             console.log("ERR: ", error);
-//             throw error
-//         })
-
-//         // 3. starting the server
-//         app.listen(process.env.PORT, () => {
-//             console.log(`App is listening on port ${process.env.PORT}`);
-//         })
-
-//     } catch (error) {
-//         console.error("ERROR: ", error)
-//         throw err
-
-//         throw error means exit an proess or exit an
-//     }
-
-// }) ()

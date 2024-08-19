@@ -14,5 +14,13 @@ const connectDB = async () => {
 }
 
 export default connectDB  
+/*
+ Connecting to the database can take an time, so async is used.
 
-// Database is Connected to Index.js
+So What is happening here is that, so we are connecting to mongodbAtlas database if an connection is 
+Successfull it will display an Message Connect or Connection failed. 
+Databse is connected to index.js
+but we have to remember is that when an async Method is used the promises are Returned
+
+*/
+
