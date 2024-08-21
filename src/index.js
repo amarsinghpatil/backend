@@ -1,6 +1,6 @@
 
     import dotenv from "dotenv"
-    import connectDB from "./db/index.js";
+   import connectDB from "./db/index.js";
     import express from "express"
     const app = express();
    
@@ -11,8 +11,7 @@
 connectDB()
  
 /*
- This code is written Due to when database connection code was written async method was used and somethings it
- return throgh
+ This code is written Due to when database connection code was written async method was used and promises are returned
 
 */
 
@@ -30,7 +29,6 @@ connectDB()
         console.log(`Server is running at port : ${process.env.PORT}`);
     })
 })
-
 
 .catch((err) => {
     console.log("MONGO db connection failed !!! ", err);
