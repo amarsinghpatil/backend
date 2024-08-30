@@ -1,0 +1,92 @@
+import mongoose from 'mongoose'
+import jwt from "jsonwebtoken"
+import bcrypt from 'bcryptjs'
+
+
+const userSchema = new mongoose.schema(
+    {
+
+    username: {
+        type: String,
+        required: true,
+        unique:true,
+        lowercase:true,
+        trim:true,
+        index:true
+    },
+
+    email: {
+        type: String,
+        required:true,
+        unique: true,
+        lowercase:true,
+        trim:true,
+    },
+
+    fullname: {
+        type: String,
+        required:true,
+        trim:true,
+        index:true
+    },
+
+    avatar: {
+        type: String, // cloudnary url
+        required: true,
+    },
+
+    coverImage: {
+        type: String, // cloudnary url
+    },
+
+    watchHistory: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "Videos"
+        }
+    ],
+
+    password: {
+        type: String,
+        required: [true, 'Password is required']
+    },
+
+    refreshToken : {
+
+        type: String
+    }
+
+},
+
+{
+    timestamps: true
+}
+
+)
+
+userSchema.pre("save", async function (next) 
+{
+    if(!this.isModified("password")) return next ();
+    this.password = bcrypt.hash(this.password, 10)
+    next()
+
+    /*
+    The code correctly hashes the password only when it has been modified, ensuring that plain-text passwords are not stored in the database.
+     There is no condition that turns true into false or vice versa.
+      The if statement simply checks if the password needs to be hashed, and if it does, it hashes it and proceeds with the save operation.
+    */ 
+})
+
+export const User = mongoose.model('User', userSchema)
+
+/*
+when USer is saved In Mongodb Automatic userid is generated, In Bishan Data is Saved
+file Naming - for Understanding Model and controller are written like User.Model.js, User.Model.js
+
+On third Party Avatar Image and Cover Image is Upload, Link is Refered. Write Schema and Model that will be 
+Interacting with an MongoDb Using Mongoose
+
+when field had to search in database mention {index:true}
+ 
+
+*/

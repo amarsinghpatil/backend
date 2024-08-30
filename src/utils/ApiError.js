@@ -22,3 +22,7 @@ class ApiError extends Error {
 
 export {apiError}
 
+/*
+What this Represent, While Connecting to the database error will occur so Error are handled here
+
+*/
