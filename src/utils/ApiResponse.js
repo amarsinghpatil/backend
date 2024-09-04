@@ -9,5 +9,5 @@ class ApiResponse {
 }
 
 /*
-Here how the response are handled, so many response will accour
+Here how the response are handled, when so many response will occurs
 */

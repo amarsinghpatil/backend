@@ -3,8 +3,9 @@ class ApiError extends Error {
         statusCode,
         message = "somethings went wrong",
         errors = [],
-        statck = ""
-    ) {
+        stack = ""
+    ) 
+    {
         super(message)
         this.statusCode = statusCode
         this.data = null
@@ -12,8 +13,8 @@ class ApiError extends Error {
         this.success = false;
         this.errors = errors
 
-        if (statck) {
-            this.stack = statck
+        if (stack) {
+            this.stack = stack
         } else {
             Error.captureStackTrace(this, this.constructor)
         }
@@ -23,6 +24,7 @@ class ApiError extends Error {
 export {apiError}
 
 /*
+
 What this Represent, While Connecting to the database error will occur so Error are handled here
 
 */
