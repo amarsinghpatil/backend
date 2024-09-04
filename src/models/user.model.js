@@ -77,16 +77,54 @@ userSchema.pre("save", async function (next)
     */ 
 })
 
+userSchema.methods.ispasswordCorrect = async function (password) {
+
+    return await bcrypt.compare(password, this.password)
+    /*
+
+    this will compare and return in boolean value either True or False
+
+    */
+}
+
+userSchema.methods.generateAccessToken = function() {
+    return jwt.sign(
+        {
+            _id: this._id,
+            email: this.email,
+            name: this.username,
+            fullName: this.fullName
+        },
+        process.env.ACCESS_TOKEN_SECRET,
+        {
+            ExpiresIn: process.env.ACCESS_TOKEN_EXPIRY
+        }
+    )
+}
+
+userSchema.methods.generateRefreshToken = function() {
+    return jwt.sign(
+        {
+            _id: this._id,
+            
+        },
+        process.env.REFRESH_TOKEN_SECRET,
+        {
+            ExpiresIn: process.env.REFRESH_TOKEN_EXPIRY
+        }
+    )
+ 
+}
+
 export const User = mongoose.model('User', userSchema)
 
 /*
-when USer is saved In Mongodb Automatic userid is generated, In Bishan Data is Saved
-file Naming - for Understanding Model and controller are written like User.Model.js, User.Model.js
 
+when User is saved In Mongodb Automatic userid is generated, In Bishan Data is Saved
+file Naming - for Understanding Model and controller are written like User.Model.js, User.Model.js
 On third Party Avatar Image and Cover Image is Upload, Link is Refered. Write Schema and Model that will be 
 Interacting with an MongoDb Using Mongoose
-
-when field had to search in database mention {index:true}
+when field had to search in database Mention {index:true}
  
 
 */
