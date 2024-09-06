@@ -3,13 +3,30 @@ import { Router } from "express";
 // handle HTTP requests
 
 import { registerUser } from '../controllers/user.controller.js'
-
+import { upload } from "../middlewares/multer.middleware.js";
 const router = Router()
 //  routes apps is defined now this is imported in app.js
 
-router.route('/register').post(registerUser)
+router.route('/register').post(
+
+// before excuting registeruser Method middleware is injected
+    upload.fields([
+ // For Many File Upoad field is used, that accept an array 
+        {
+            name: "avatar",
+            maxCount:1
+        },
+        {
+            name:" coverImage",
+            maxCount: 1
+        }
+// two files are uploading so two object are Created
+    ]),registerUser)
+
+
 // this is a route for register user, it will call the registerUser function when the user send request
 // by http:localhost:8000/User/register
+
 
  
 
@@ -18,6 +35,8 @@ If an user request localhost:8000/users/login then here login function/methods i
 In layman when user is try to access localhost:8000/user/register its an request passed to sever
 which is listening at an port 8000. then server passes the request to routes, which then call  methods or
 function, it then direct to controller. it give an response.
+
+
 
 */
 

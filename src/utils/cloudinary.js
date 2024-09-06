@@ -12,6 +12,7 @@ cloudinary.config({
 });
 
 const uploadOnCloudinary = async (localFilePath) => {
+
     try {
         if (!localFilePath) return null
         //upload the file on cloudinary
@@ -21,6 +22,8 @@ const uploadOnCloudinary = async (localFilePath) => {
         // file has been uploaded Successfull
         console.log('file is uploaded on cloudinary',response.url);
         return response;
+        
+// how to remove file uploaded by an multer
 
     } catch (error) {
         fs.unlinkSync(localFilePath) 
@@ -31,7 +34,7 @@ const uploadOnCloudinary = async (localFilePath) => {
 
 }
 
-export {uploadOnCloudinary}
+export { uploadOnCloudinary }
 
 // 11:30 PM Start to 1:30 end 1st Session Finished - 2 hr
 // 2nd Session --> 7 PM to 

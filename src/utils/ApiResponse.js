@@ -8,6 +8,10 @@ class ApiResponse {
     }
 }
 
+export { ApiResponse }
+
 /*
+
 Here how the response are handled, when so many response will occurs
+
 */
