@@ -14,13 +14,13 @@ app.use(express.urlencoded({extended: true, Limit: "16kb"}))
 app.use(express.static("Public"))
 app.use(cookieParser())
 
-
 // routes import
 import userRouter from './routes/user.routes.js' 
 
 //routes declaration
 
 app.use('/api/v1/user', userRouter)
+
 
 /* 
 
@@ -33,6 +33,8 @@ Routed to register method. her how url is build is Described
 login Methods 
 This is an Good practices
 
+
+-r dotenv/config src/
 */
 
 

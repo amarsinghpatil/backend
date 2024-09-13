@@ -5,7 +5,8 @@ cloudinary.config({
     
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+    secure: true
 
     // cloudnary configuration tells about an file uploading
 
@@ -39,6 +40,4 @@ export { uploadOnCloudinary }
 // 11:30 PM Start to 1:30 end 1st Session Finished - 2 hr
 // 2nd Session --> 7 PM to 
 
-/*
-1. 
-*/
+

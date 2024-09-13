@@ -1,9 +1,10 @@
 import mongoose from 'mongoose'
 import jwt from "jsonwebtoken"
-import bcrypt from 'bcryptjs'
+import bcrypt from "bcrypt"
 
-
-const userSchema = new mongoose.schema(
+const Schema = mongoose.Schema;
+const userSchema = new mongoose.Schema(
+    
     {
 
     username: {
@@ -36,7 +37,9 @@ const userSchema = new mongoose.schema(
     },
 
     coverImage: {
+
         type: String, // cloudnary url
+
     },
 
     watchHistory: [
@@ -75,6 +78,7 @@ userSchema.pre("save", async function (next)
      There is no condition that turns true into false or vice versa.
       The if statement simply checks if the password needs to be hashed, and if it does, it hashes it and proceeds with the save operation.
     */ 
+
 })
 
 userSchema.methods.ispasswordCorrect = async function (password) {
@@ -126,5 +130,4 @@ On third Party Avatar Image and Cover Image is Upload, Link is Refered. Write Sc
 Interacting with an MongoDb Using Mongoose
 when field had to search in database Mention {index:true}
  
-
 */
