@@ -16,7 +16,7 @@ connectDB()
 
 .then(() => {
     
-    app.listen(process.env.PORT || 8000, () =>{
+    app.listen(process.env.PORT || 4000, () =>{
     //If an Port was not able identify then use default or use an server port (best Production practice to avoid an server crash)
 
         console.log(`Server is running at port : ${process.env.PORT}`);

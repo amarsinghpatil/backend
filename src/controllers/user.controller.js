@@ -4,6 +4,7 @@ import { ApiError } from '../utils/ApiError.js'
 import { User } from '../models/user.model.js'
 import { ApiResponse } from '../utils/ApiResponse.js'
 
+
 const registerUser = asyncHandler( async (req, res) => {
 
     //get user details from frontend -> done
@@ -19,7 +20,11 @@ const registerUser = asyncHandler( async (req, res) => {
    // 1. get user details from frontend
     const { fullname, email, username, password } = req.body
     console.log('Email:', email)
-    console.log('FullName',fullname )
+    console.log('FullName',fullname)
+    console.log('Username', username );
+    console.log('Password', password);
+    
+    // do console.log response of req.body to see what types of response we get
 
    // 2. validation - not empty -> done
     if ([fullname, email, username, password].some((field)=>
@@ -41,22 +46,28 @@ const registerUser = asyncHandler( async (req, res) => {
         // it check in database that user is available or not  if available then return error
     }
 
-    // 4. checking an images and avatar
+     //4. checking an images and avatar
 
-    const avatarlocalPath = req.files?.avatar[0].path;
+    const avatarlocalPath = req.files?.avatar[0]?.path;
+    console.log(avatarlocalPath);
+    
     const coverImageLocalPath = req.files?.coverImage[0]?.path;
 
-    if (!avatarlocalpath) {
+    if (!avatarlocalPath) {
       throw new ApiError(400, "Avatar file is required")
       //check avatar file is available in localstorage
     }
 
-    // uploading avatar and coverimage to cloudinary
+    //uploading avatar and coverimage to cloudinary
     const avatar = await uploadOnCloudinary(avatarlocalPath)
     const coverImage = await uploadOnCloudinary(coverImageLocalPath)
 
+   console.log(avatar);
+    
     if(!avatar){
+        
       throw new ApiError(400, "Avatar file is required")
+
     }
 
     //6.create user object in database
@@ -78,7 +89,8 @@ const registerUser = asyncHandler( async (req, res) => {
    
     //console.log(createdUser)
     if(!createdUser){
-        throw new ApiError(500, "Failed to create user while registering user")
+      
+        throw new ApiError(500, "failed to create an user in datbase, and user is not present")
     }
 
     // User is not found in database then give an error failed to create user
@@ -98,7 +110,7 @@ export {registerUser}
 /*
 Taking an data from postman and uploading on cloudinary and Mongodb
 
- const avatarlocalpath = req.files?.avatar[0]?.path; // looking for avatar in given Path. may get may not get
+ const aatarlocalpath = req.files?.avatar[0]?.path; // looking for avatar in given Path. may get may not get
     const coverimagelocalpath = req.files?.coverImage[0]?.path; // looking for cover Image in given Path, may get may not get
     console.log(avatarlocalpath);
     console.log(coverimagelocalpath)
