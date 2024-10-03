@@ -1,9 +1,11 @@
 import { Router } from "express";
+import { verifyJWT } from "../middlewares/auth.middleware.js";
+
 
 // import an router class from an express module, it provide an ways to define routes and 
 // handle HTTP requests
 
-import { registerUser } from '../controllers/user.controller.js'
+import { loginUser, logoutUser, registerUser } from '../controllers/user.controller.js'
 import { upload } from "../middlewares/multer.middleware.js";
 const router = Router()
 //  routes apps is defined now this is imported in app.js
@@ -20,7 +22,7 @@ router.route('/register').post(
         },
 
         {
-            name:" coverImage",  //Two files are uploading so two object are Created
+            name:"coverImage",  //Two files are uploading so two object are Created
             maxCount: 1
         }
 
@@ -29,7 +31,14 @@ router.route('/register').post(
 // this is a route for register user, it will call the registerUser function when the user send request
 // by http:localhost:8000/User/register
 
+router.route("/login").post(loginUser)
+// router - handle Different Http request
+
+router.route("/logout").post(verifyJWT, logoutUser)
+//
+
 /*
+
 
 If an user request localhost:8000/users/login then here login function/methods is invoked
 In layman when user is try to access localhost:8000/user/register its an request passed to ----> sever

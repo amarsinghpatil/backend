@@ -1,5 +1,7 @@
 const asyncHandler = (requestHandler) => {
+
     return (req, res, next) => {
+
         Promise.resolve(requestHandler(req, res, next)).
         catch((err) => next(err))
     }
@@ -24,13 +26,15 @@ export {asyncHandler}
 // }
 
 /*
-While running webapp , you will be much interactng with database, so always
- you dont have to write asyn try and catch again and again for commanly Interacting with an database. so in Utilis you have
- to make an File Named asynhandler.js. what does that do is that ,method created and function is passed into it
+
+ While running webapp , you will be much interactng with database, so always
+ you dont have to write asyn try and catch method again and again for commanly Interacting with an database. so in Utilis you have
+ to make an File Named asynhandler.js. this method is created and function is passed into it.
  and exported.
 
- So an Function is passed which has an argument, when the fucntion is executed result is wrapped
- in promises, when an error is accour that is passed to next() which will trigger an error handling middleware(function)
+ So when Function is passed which is an argument, when the fucntion is executed result is wrapped
+ in promises, when an error is occur that is passed to next() which will trigger an error handling middleware(function)
 
  Async Handler function <---> Database Connection
+
 */ 

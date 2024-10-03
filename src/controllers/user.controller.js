@@ -4,6 +4,27 @@ import { ApiError } from '../utils/ApiError.js'
 import { User } from '../models/user.model.js'
 import { ApiResponse } from '../utils/ApiResponse.js'
 
+const generateAccessTokenAndRefreshTokens = async (userid) => {
+     try {
+
+        const user = await User.findById(userid); // Database call
+        const accesstoken = user.generateAccessToken(); 
+        const refreshToken = user.generateRefreshToken();
+
+        user.refreshToken = refreshToken// this save in user object
+        await user.save({ validatebeforeSave: false })
+        // this save in updated back to the database
+        // where does this save happen does it happen in server or database
+    
+        return { accesstoken, refreshToken }
+
+     }
+     catch (error) {
+        throw new ApiError(500, "Somethings went wrong while generating refresh token and Access token")
+
+     }
+
+}
 
 const registerUser = asyncHandler( async (req, res) => {
 
@@ -37,7 +58,6 @@ const registerUser = asyncHandler( async (req, res) => {
     const exitedUser = await User.findOne({// This User is of mongoose Intereating with an mongodb calling as much as possible
         $or:[{username},{email}] // Calling user database and checking given username and email match with preexiting database
         // checking inside object, return if exited user is present in database or return an error
-       
     })
 
     if (exitedUser) { // 
@@ -72,13 +92,16 @@ const registerUser = asyncHandler( async (req, res) => {
 
     //6.create user object in database
     const user = await User.create({
+
         fullname,
         avatar: avatar.url, // before creating  check avatar url available or not
         coverImage: coverImage?.url || "", // before creating coverimage check coverimage.url is available or not
         email,
         password,
         username: username.toLowerCase()
+
     }) 
+
        // console.log(user)
 
     //checking if user created ? or it returned an empty
@@ -102,10 +125,102 @@ const registerUser = asyncHandler( async (req, res) => {
     return res.status(201).json(
         new ApiResponse(200, createdUser, "User registered Successfully")
     )
-    
-})             
+     
+})       
 
-export {registerUser}
+const loginUser = asyncHandler(async (req, res) => {
+
+    // req body --> data
+    // username or email
+    // find the user
+    // check password
+    // generate an access token and refresh token
+    // send back using cookies
+
+    // Extracting an data from request body
+    const { email, username, password} = req.body;
+
+    // checking an username and email is available or not
+    if(!email || !username){
+
+        throw new ApiError (400, "Username or email is required")
+
+    }
+
+    //checking for user availablility
+    const user = await User.findOne({$or:[{username}, {email}]}) // Connecting with an database
+
+    if(!user){
+        throw new ApiError(404, "User didn't Exited ")
+    }
+
+    // check is password correct
+    const ispasswordvalid = await user.ispasswordcorrect(password)
+
+    if(!ispasswordvalid){
+        throw new ApiError(401,"Invalid User credential")
+    }
+
+    const { accessToken, refreshToken } = await generateAccessTokenAndRefreshTokens(user._id)
+    // how to pass user._id to this above token
+   
+    // send back using cookies Accesstoken and Refresh Token
+    const options = {
+        httpOnly: true, // Set an true means connot access an cookies from an client
+        secure: true // cookies are only send through an https connections only
+    }
+
+    return res
+    .status(200)
+    .cookie("refreshToken", refreshToken, options)// key and value, option
+    .cookie("accessToken", accessToken, options)// key and value, option
+    .json(
+
+        // why this response is used - Manually user is trying to save into local storage
+        // may user be developing an mobile application there cookies cannot be saved
+
+        new ApiResponse(
+            200, 
+
+            {
+                user: loggedInUser, accessToken, refreshToken // object sending
+            },
+               
+            "User logged in successfully"
+
+        ) 
+    )
+})
+
+    const logoutUser = asyncHandler(async (req, res) =>  {
+        await User.findByIdAndUpdate(
+            req.user._id,
+            {
+                $set: {
+                    refreshToken: undefined
+                },
+                
+            },
+
+            {
+                new:true
+            }
+        )
+         
+        const options = {
+            httpOnly: true,
+            secure: true
+        }
+
+        return res
+        .status(200)
+        .clearCookie("accessToken", options)
+        .clearCookie("refreshToken", options)
+        .json(new ApiResponse(200, {}, "User logged out"))
+
+    })
+
+export {registerUser, loginUser, logoutUser }
 
 /*
 Taking an data from postman and uploading on cloudinary and Mongodb
@@ -130,7 +245,5 @@ Taking an data from postman and uploading on cloudinary and Mongodb
     if(!avatar){
         throw new ApiError(400, "Avatar is required")
     }
-
-
 
 */
