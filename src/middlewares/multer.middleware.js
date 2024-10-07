@@ -12,7 +12,7 @@ import multer from 'multer';
 const storage = multer.diskStorage({
     // Destination for uploaded files
     destination: function (req, file, cb) {
-        cb(null, "./public/Temp")
+        cb(null, './public/Temp')
     },
 
 
@@ -20,13 +20,12 @@ const storage = multer.diskStorage({
     // Here, the original filename from the uploaded file is used.
     filename: function (req, file, cb) {
         cb(null, file.originalname )
+       
+        
     }
-
-   
 
    
 })
  
 
-
-export const upload = multer({storage,})
+export const upload = multer({ storage: storage });

@@ -15,25 +15,26 @@ cloudinary.config({
 const uploadOnCloudinary = async (localFilePath) => {
 
     try {
-        if (!localFilePath) return null
+        if (localFilePath) return null
         //upload the file on cloudinary
         const response = await cloudinary.uploader.upload(localFilePath, {
             resource_type: "auto"
         })
         // file has been uploaded Successfull
-       // console.log('file is uploaded on cloudinary',response.url);
+        console.log('file is uploaded on cloudinary',response.url);
        // return response;
-        fs.unlinkSync(localFilePath)
+      //  fs.unlinkSync(localFilePath)
         return response;
         
 // how to remove file uploaded by an multer
 
     } catch (error) {
-        fs.unlinkSync(localFilePath) 
+       // fs.unlinkSync(localFilePath) 
         //remove the locally saved temporary file as the upload Operation got failed
+        console.log('File is not uploaded '); 
+        
         return null;
     }
-
 
 }
 
