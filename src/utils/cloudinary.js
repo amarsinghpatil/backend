@@ -40,7 +40,6 @@ const uploadOnCloudinary = async (localFilePath) => {
 
 export { uploadOnCloudinary }
 
-// 11:30 PM Start to 1:30 end 1st Session Finished - 2 hr
-// 2nd Session --> 7 PM to 
+
 
 
